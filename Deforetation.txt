@@ -1,0 +1,20 @@
+<html>
+<head>
+<title>Deforestation</title>
+</head>
+<body>
+<h1>Deforestation</h1>
+<p>What is Deforestation?
+Deforestation refers to the process by which natural forests are cleared or removed, often to make way for agriculture, urban development, logging, or infrastructure projects. It results in the permanent loss of trees and forest ecosystems in an area.
+Causes of Deforestation
+Agricultural Expansion: Forests are often cleared to create land for crops and livestock.
+Logging: Cutting trees for timber, paper products, and fuelwood.
+Urbanization: Expanding cities and infrastructure lead to forest loss, particularly in growing regions like Maharashtra.
+Mining: Extraction of minerals and other resources can clear vast forest areas.
+Forest Fires: Both natural and human-induced fires contribute to forest loss.
+Environmental and Social Impacts
+Loss of Biodiversity: Forests are home to a vast variety of plants and animals; deforestation leads to habitat destruction and extinction risk.
+Climate Change: Trees absorb carbon dioxide; their removal releases greenhouse gases, accelerating global warming.
+Soil Erosion: Trees help anchor soil; without them, erosion increases, harming agriculture and water quality.
+Disruption of Water Cycles: Forest loss affects rainfall patterns and local water availability.
+Impact on Indigenous Communities: Many forest-dependent peoples lose livelihoods and cultural heritage.</p></body></html>
