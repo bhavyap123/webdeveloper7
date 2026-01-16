@@ -1,0 +1,106 @@
+<html>
+<head>
+<title>Shopping Cart</title>
+<style>
+p {
+      font-family: 'Times New Roman', serif;
+      font-size: 25px;
+      color: #5F9EA0;
+      font-style: italic;
+     } 
+.sale {
+background: Red;
+color: white;
+text-align: center;
+padding: 20px;
+font-size: 24px;
+animation: blink 1s infinite alternate;
+}
+@keyframes blink {
+ from { opacity: 5; }
+ to { opacity: 0.0; }
+ }
+.card {
+max-width: 600px;
+margin: auto;
+background-color: #F0F8FF;
+padding: 20px;
+border: 2px solid #333;
+border-radius: 8px;
+box-shadow: 3px 3px 30px black;
+}
+.cart {
+margin-top:50px;
+padding:25px;
+ background-color:orange;
+ display: inline-block;
+ border-radius:25px;
+}
+</style>
+</head>
+<body>
+<div class="sale">
+Best Books For Children
+</div>
+
+
+    <h1>Welcome to the Shop!</h1>
+    <p>Click the button to add an item to the cart.</p>
+
+    <div class="item">
+        <p><img src="https://th.bing.com/th/id/OSK.ceb9910177b6a1e919bc78b9c6ae82a5?w=140&h=210&c=7&rs=1&qlt=80&o=6&pid=SANGAM" height="300" width="300"></p>
+        <p>Famous Five - ₹1000</p>
+        <button onclick="addToCart('Famous Five')">Add to Cart</button>
+    </div>
+
+    <div class="item">
+        <p><img src="https://m.media-amazon.com/images/I/81Tf68D4QiL._SL1500_.jpg" height="300" width="300"></p>
+        <p>F1 Book - ₹Priceless</p>
+        <p>Author: Sir Jackie Stewart</p>
+        <button onclick="addToCart('F1 book')">Add to Cart</button>
+    </div>
+
+    <div class="item">
+        <p><img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1660062770i/61917439.jpg" height="300" width="300"></p>
+        <p>Harry Potter - ₹988</p>
+        <p>Author: J.K Rowling</p>
+        <button onclick="addToCart('Harry Potter')">Add to Cart</button>
+    </div>
+<div class="item">
+        <p><img src="https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781545810255/geronimo-stilton-reporter-vol-13-9781545810255_hr.jpg" height="300" width="300"> Geronimo Stilton</p>
+        <p>Price- ₹900
+        <p>Author name: Elisabeta Dami</p>
+        <button onclick="addToCart('Geronimo Stilton')">Add to Cart</button>
+    </div>
+<div class="item">
+<p> <img src="https://tse2.mm.bing.net/th/id/OIP.GwdmEGRlWYoirdyeFzJu5AHaLH?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" height="300" width="300">Naruto</p>
+ <p>Author: Masaikishi moto</p>
+<p>price-  ₹1000</p>
+        <button onclick="addToCart('Naruto')">Add to Cart</button>
+    </div>
+    <div class="cart">
+        <h3>Shopping Cart</h3>
+        <p id="cartList">Cart is empty</p>
+    </div>
+    <script>
+        let totalAmount = 0;
+
+        function addToCart(item, price) {
+            let cart = document.getElementById("cartList");
+            let total = document.getElementById("totalAmount");
+
+            // Update cart items
+            if (cart.innerHTML === "Cart is empty") {
+                cart.innerHTML = item;
+            } else {
+                cart.innerHTML += ", " + item;
+            }
+
+            // Update total amount
+            totalAmount += price;
+            total.innerHTML = totalAmount;
+        }
+    </script>
+
+</body>
+</html>
