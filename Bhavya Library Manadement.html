@@ -23,8 +23,8 @@ width: 100%;
 
 div  {
 padding: 10px;
-border-radius:100%;
-
+border-radius:7%;
+background-image: radial-gradient(pink);
 }
 
 input  {
@@ -113,25 +113,25 @@ background-image: radial-gradient(lightblue,lightgreen);
 
 <div class="form-box">
         <h2>Book Issue Form</h2>
-        
+        <ul>
         <form>
-            <!-- Field 1: Book Name -->
+          <li>  <!-- Field 1: Book Name -->
             <div class="input-group">
                 <label for="book-name">Book Name</label>
                 <input type="text" id="book-name" placeholder="Book Name">
-            </div>
+            </div></li>
 
-            <!-- Field 2: Book ID -->
+          <li>  <!-- Field 2: Book ID -->
             <div class="input-group">
                 <label for="book-id">Book ID</label>
                 <input type="text" id="book-id" placeholder="Book ID">
-            </div>
+            </div></li>
 
-            <!-- Field 3: Author's Name -->
+           <li> <!-- Field 3: Author's Name -->
             <div class="input-group">
                 <label for="author-name">Author's Name</label>
                 <input type="text" id="author-name" placeholder="Author's Name">
-            </div>
+            </div></li></ul>
 
 
               <button type="submit">Issue Book</button>
