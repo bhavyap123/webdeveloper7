@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Match Game</title>
+    <style>
+        /* CSS: Layout and Card-Flipping Animations */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #252542);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ff7b00, #ffae00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-container {
+            display: flex;
+            gap: 20px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+            perspective: 1000px; /* Crucial for 3D flip effect */
+        }
+
+        .card {
+            aspect-ratio: 1;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            cursor: pointer;
+        }
+
+        /* Triggered by JavaScript when card is clicked */
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hides the back side when turned */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            border: 2px solid #fff;
+        }
+
+        .card-front {
+            background-color: #2e3856;
+            transform: rotateY(180deg);
+            border: 2px solid #8f94fb;
+        }
+
+        .card.matched .card-front {
+            background-color: #1b4d3e;
+            border-color: #2ecc71;
+            animation: match-pulse 0.4s ease-in-out;
+        }
+
+        @keyframes match-pulse {
+            0% { transform: rotateY(180deg) scale(1); }
+            50% { transform: rotateY(180deg) scale(1.05); }
+            100% { transform: rotateY(180deg) scale(1); }
+        }
+
+        .btn-restart {
+            margin-top: 25px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #4e54c8, #8f94fb);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HTML: Game Structure -->
+    <h1>Memory Match</h1>
+    
+    <div class="score-container">
+        <div>Flips: <span id="flip-count">0</span></div>
+        <div>Matches: <span id="match-count">0</span>/8</div>
+    </div>
+
+    <div class="game-board" id="game-board"></div>
+
+    <button class="btn-restart" id="btn-restart">Restart Game</button>
+
+    <!-- JavaScript: Game Logic -->
+    <script>
+        const board = document.getElementById('game-board');
+        const flipCountEl = document.getElementById('flip-count');
+        const matchCountEl = document.getElementById('match-count');
+        const restartBtn = document.getElementById('btn-restart');
+
+        const emojis = ['🎮', '🚀', '🐱', '🦄', '🍕', '💎', '🎨', '👻'];
+        let cardsArray = [...emojis, ...emojis]; // Duplicate array to make 8 pairs
+        
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let totalFlips = 0;
+        let isLockingBoard = false; // Prevents clicking more cards during animations
+
+        // Fisher-Yates Shuffle Algorithm
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createBoard() {
+            board.innerHTML = '';
+            shuffle(cardsArray);
+            
+            cardsArray.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.emoji = emoji;
+
+                const cardBack = document.createElement('div');
+                cardBack.classList.add('card-back');
+                cardBack.textContent = '❓';
+
+                const cardFront = document.createElement('div');
+                cardFront.classList.add('card-front');
+                cardFront.textContent = emoji;
+
+                card.appendChild(cardBack);
+                card.appendChild(cardFront);
+                card.addEventListener('click', flipCard);
+                board.appendChild(card);
+            });
+        }
+
+        function flipCard() {
+            if (isLockingBoard) return;
+            if (this.classList.contains('flipped') || this.classList.contains('matched')) return;
+
+            this.classList.add('flipped');
+            flippedCards.push(this);
+
+            if (flippedCards.length === 2) {
+                totalFlips++;
+                flipCountEl.textContent = totalFlips;
+                checkForMatch();
+            }
+        }
+
+        function checkForMatch() {
+            const [card1, card2] = flippedCards;
+            const isMatch = card1.dataset.emoji === card2.dataset.emoji;
+
+            if (isMatch) {
+                disableCards();
+            } else {
+                unflipCards();
+            }
+        }
+
+        function disableCards() {
+            flippedCards[0].classList.add('matched');
+            flippedCards[1].classList.add('matched');
+            matchedPairs++;
+            matchCountEl.textContent = matchedPairs;
+            resetTurn();
+
+            if (matchedPairs === emojis.length) {
+                setTimeout(() => alert(`🎉 Congratulations! You won in ${totalFlips} flips!`), 500);
+            }
+        }
+
+        function unflipCards() {
+            isLockingBoard = true;
+            setTimeout(() => {
+                flippedCards[0].classList.remove('flipped');
+                flippedCards[1].classList.remove('flipped');
+                resetTurn();
+            }, 1000); // Leaves cards visible for 1 second before flipping back
+        }
+
+        function resetTurn() {
+            flippedCards = [];
+            isLockingBoard = false;
+        }
+
+        function resetGame() {
+            matchedPairs = 0;
+            totalFlips = 0;
+            flippedCards = [];
+            isLockingBoard = false;
+            flipCountEl.textContent = '0';
+            matchCountEl.textContent = '0';
+            createBoard();
+        }
+
+        restartBtn.addEventListener('click', resetGame);
+        createBoard(); // Start game on load
+    </script>
+</body>
+</html>
