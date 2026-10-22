@@ -1,0 +1,159 @@
+<html lang="en">
+<head>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+}
+
+#game-info {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+#game-area {
+    width: 600px;
+    height: 400px;
+    margin: auto;
+    background: rgba(255,255,255,0.1);
+    border: 3px solid white;
+    position: relative;
+    overflow: hidden;
+}
+
+#target {
+    width: 50px;
+    height: 50px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+}
+
+#question-box {
+    margin: 20px auto;
+    width: 60%;
+    background: rgba(0,0,0,0.3);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.option-btn {
+    background: white;
+    color: black;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.option-btn:hover {
+    background: yellow;
+}
+
+</style>
+    <meta charset="UTF-8">
+    <title>Web Master Challenge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>WEB MASTER CHALLENGE</h1>
+<div id="game-info">
+    <p><strong>Score:</strong> <span id="score">0</span></p>
+    <p><strong>Time Left:</strong> <span id="time">45</span>s</p>
+</div>
+
+<div id="question-box">
+    <p id="question">Loading question...</p>
+    <div id="options"></div>
+</div>
+
+<div id="game-area">
+    <div id="target"></div>
+</div>
+<script>
+let score = 0;
+let timeLeft = 45;
+
+const scoreDisplay = document.getElementById("score");
+const timeDisplay = document.getElementById("time");
+const target = document.getElementById("target");
+const questionBox = document.getElementById("question");
+const optionsBox = document.getElementById("options");
+
+const questions = [
+    {
+        q: "Which tag creates a hyperlink?",
+        options: ["<a>", "<link>", "<href>"],
+        answer: "<a>"
+    },
+    {
+        q: "CSS stands for?",
+        options: ["Creative Style System", "Cascading Style Sheets", "Color Styling Syntax"],
+        answer: "Cascading Style Sheets"
+    },
+    {
+        q: "Which language adds interactivity?",
+        options: ["HTML", "CSS", "JavaScript"],
+        answer: "JavaScript"
+    },
+    {
+        q: "Which tag displays an image?",
+        options: ["<img>", "<picture>", "<src>"],
+        answer: "<img>"
+    }
+];
+
+function loadQuestion() {
+    const q = questions[Math.floor(Math.random() * questions.length)];
+    questionBox.textContent = q.q;
+    optionsBox.innerHTML = "";
+
+    q.options.forEach(opt => {
+        const btn = document.createElement("div");
+        btn.className = "option-btn";
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(opt, q.answer);
+        optionsBox.appendChild(btn);
+    });
+}
+
+function checkAnswer(selected, correct) {
+    if (selected === correct) score += 10;
+    else score -= 5;
+    scoreDisplay.textContent = score;
+    loadQuestion();
+}
+
+function moveTarget() {
+    const x = Math.random() * 550;
+    const y = Math.random() * 350;
+    target.style.left = x + "px";
+    target.style.top = y + "px";
+}
+
+target.onclick = () => {
+    score += 10;
+    scoreDisplay.textContent = score;
+    moveTarget();
+};
+
+setInterval(moveTarget, 700); // fast movement (hard level)
+
+setInterval(() => {
+    timeLeft--;
+    timeDisplay.textContent = timeLeft;
+    if (timeLeft <= 0) {
+        alert("Time's up! Final Score: " + score);
+        location.reload();
+    }
+}, 1000);
+
+loadQuestion();
+</script>
+</body>
+</html>

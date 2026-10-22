@@ -1,0 +1,47 @@
+<html>
+<head>
+<style>
+body {
+    background:#111;
+    color:white;
+    font-family:Arial, sans-serif;
+    padding:20px;
+}
+
+/* BROKEN GRID — players must fix */
+.container {
+    display:block; /* should be grid */
+    grid-template-columns: repeat(3, 1fr);
+    gap:20px;
+}
+
+/* WRONG SELECTOR — hides message */
+.card {
+    background:#222;
+    padding:20px;
+    border-radius:10px;
+    transform:rotate(2deg);
+}
+
+/* Hidden message — players must reveal */
+.card.hidden-messagee { /* typo to fix */
+    background:#111;
+    color:#111; /* should be visible */
+    font-size:24px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+<h1>Fix the Website Challenge</h1>
+
+<div class="container">
+    <div class="card">Card 1: Fix the grid!</div>
+    <div class="card">Card 2: Straighten layout!</div>
+    <div class="card">Card 3: Correct selectors!</div>
+    <div class="card hidden-messagee">YOU WIN!</div>
+</div>
+
+</body>
+</html>
